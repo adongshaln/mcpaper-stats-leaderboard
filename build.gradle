@@ -25,5 +25,5 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.jar {
-    archiveFileName = 'stats-leaderboard-1.0.0.jar'
+    archiveFileName = 'mcpaper-stats-leaderboard-1.0.0.jar'
 }

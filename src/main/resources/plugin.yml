@@ -1,4 +1,4 @@
-name: StatsLeaderboard
+name: mcpaper-stats-leaderboard
 version: 1.0.0
 main: com.pjminecraft.statsleaderboard.StatsLeaderboardPlugin
 api-version: '26.3'
