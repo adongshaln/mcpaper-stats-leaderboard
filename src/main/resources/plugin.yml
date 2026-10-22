@@ -1,0 +1,11 @@
+name: StatsLeaderboard
+version: 1.0.0
+main: com.pjminecraft.statsleaderboard.StatsLeaderboardPlugin
+api-version: '26.3'
+description: Player block and distance leaderboards
+author: adongshaln
+commands:
+  statsleaderboard:
+    description: 查看挖掘数量和移动距离
+    usage: /statsleaderboard [me|top <blocks|distance> [数量]]
+    aliases: [slb]
