@@ -46,7 +46,9 @@ public final class StatsLeaderboardPlugin extends JavaPlugin implements Listener
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        store.getOrCreate(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+        if (!ExcludedPlayers.isExcluded(event.getPlayer().getName())) {
+            store.getOrCreate(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+        }
         hud.show(event.getPlayer());
     }
 }

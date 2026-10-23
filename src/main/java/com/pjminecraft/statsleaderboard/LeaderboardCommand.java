@@ -69,6 +69,10 @@ final class LeaderboardCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(Component.text("这个命令只能由玩家使用。", NamedTextColor.RED));
             return;
         }
+        if (ExcludedPlayers.isExcluded(player.getName())) {
+            player.sendMessage(Component.text("不记录你的统计。", NamedTextColor.GRAY));
+            return;
+        }
         PlayerStatistics statistics = store.getOrCreate(player.getUniqueId(), player.getName());
         sender.sendMessage(Component.text(
                 statistics.playerName()

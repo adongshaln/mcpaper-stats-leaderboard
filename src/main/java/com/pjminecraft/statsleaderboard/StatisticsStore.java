@@ -39,6 +39,10 @@ final class StatisticsStore {
                 if (player == null) {
                     continue;
                 }
+                if (ExcludedPlayers.isExcluded(player.getString("name"))) {
+                    dirty = true;
+                    continue;
+                }
                 players.put(playerId, new PlayerStatistics(
                         playerId,
                         player.getString("name"),
@@ -54,7 +58,9 @@ final class StatisticsStore {
     }
 
     Collection<PlayerStatistics> all() {
-        return java.util.List.copyOf(players.values());
+        return players.values().stream()
+                .filter(statistics -> !ExcludedPlayers.isExcluded(statistics.playerName()))
+                .toList();
     }
 
     PlayerStatistics getOrCreate(UUID playerId, String playerName) {
@@ -70,12 +76,15 @@ final class StatisticsStore {
     }
 
     void recordMinedBlock(UUID playerId, String playerName) {
+        if (ExcludedPlayers.isExcluded(playerName)) {
+            return;
+        }
         getOrCreate(playerId, playerName).addMinedBlock();
         dirty = true;
     }
 
     void recordDistance(UUID playerId, String playerName, double distance) {
-        if (!Double.isFinite(distance) || distance <= 0.0D) {
+        if (ExcludedPlayers.isExcluded(playerName) || !Double.isFinite(distance) || distance <= 0.0D) {
             return;
         }
         getOrCreate(playerId, playerName).addDistance(distance);
@@ -83,11 +92,17 @@ final class StatisticsStore {
     }
 
     void recordDeath(UUID playerId, String playerName) {
+        if (ExcludedPlayers.isExcluded(playerName)) {
+            return;
+        }
         getOrCreate(playerId, playerName).addDeath();
         dirty = true;
     }
 
     void recordKill(UUID playerId, String playerName) {
+        if (ExcludedPlayers.isExcluded(playerName)) {
+            return;
+        }
         getOrCreate(playerId, playerName).addKill();
         dirty = true;
     }
