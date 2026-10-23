@@ -6,6 +6,6 @@ description: Player block and distance leaderboards
 author: adongshaln
 commands:
   statsleaderboard:
-    description: 查看挖掘数量和移动距离
-    usage: /statsleaderboard [me|top <blocks|distance> [数量]]
+    description: 查看挖掘、移动、击杀和死亡
+    usage: /statsleaderboard [me|top <blocks|distance|kills|deaths> [数量]]
     aliases: [slb]

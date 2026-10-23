@@ -8,17 +8,19 @@ final class PlayerStatistics {
     private long blocksMined;
     private double distanceMoved;
     private long deaths;
+    private long kills;
 
     PlayerStatistics(UUID playerId, String playerName) {
-        this(playerId, playerName, 0L, 0.0D, 0L);
+        this(playerId, playerName, 0L, 0.0D, 0L, 0L);
     }
 
-    PlayerStatistics(UUID playerId, String playerName, long blocksMined, double distanceMoved, long deaths) {
+    PlayerStatistics(UUID playerId, String playerName, long blocksMined, double distanceMoved, long deaths, long kills) {
         this.playerId = playerId;
         this.playerName = normalizeName(playerName, playerId);
         this.blocksMined = Math.max(0L, blocksMined);
         this.distanceMoved = Double.isFinite(distanceMoved) ? Math.max(0.0D, distanceMoved) : 0.0D;
         this.deaths = Math.max(0L, deaths);
+        this.kills = Math.max(0L, kills);
     }
 
     UUID playerId() {
@@ -39,6 +41,10 @@ final class PlayerStatistics {
 
     long deaths() {
         return deaths;
+    }
+
+    long kills() {
+        return kills;
     }
 
     boolean updatePlayerName(String playerName) {
@@ -66,6 +72,12 @@ final class PlayerStatistics {
     void addDeath() {
         if (deaths < Long.MAX_VALUE) {
             deaths++;
+        }
+    }
+
+    void addKill() {
+        if (kills < Long.MAX_VALUE) {
+            kills++;
         }
     }
 

@@ -30,7 +30,7 @@ final class LeaderboardCommand implements CommandExecutor, TabCompleter {
         if (args[0].equalsIgnoreCase("top") && args.length >= 2) {
             LeaderboardMetric metric = metric(args[1]);
             if (metric == null) {
-                sender.sendMessage(Component.text("用法：/" + label + " top <blocks|distance|deaths> [数量]", NamedTextColor.RED));
+                sender.sendMessage(Component.text("用法：/" + label + " top <blocks|distance|kills|deaths> [数量]", NamedTextColor.RED));
                 return true;
             }
             int limit = DEFAULT_LIMIT;
@@ -49,7 +49,7 @@ final class LeaderboardCommand implements CommandExecutor, TabCompleter {
             showTop(sender, metric, limit);
             return true;
         }
-        sender.sendMessage(Component.text("用法：/" + label + " [me|top <blocks|distance|deaths> [数量]]", NamedTextColor.RED));
+        sender.sendMessage(Component.text("用法：/" + label + " [me|top <blocks|distance|kills|deaths> [数量]]", NamedTextColor.RED));
         return true;
     }
 
@@ -59,7 +59,7 @@ final class LeaderboardCommand implements CommandExecutor, TabCompleter {
             return filter(List.of("me", "top"), args[0]);
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("top")) {
-            return filter(List.of("blocks", "distance", "deaths"), args[1]);
+            return filter(List.of("blocks", "distance", "kills", "deaths"), args[1]);
         }
         return List.of();
     }
@@ -74,7 +74,8 @@ final class LeaderboardCommand implements CommandExecutor, TabCompleter {
                 statistics.playerName()
                         + "：已挖掘 " + CompactNumbers.format(statistics.blocksMined())
                         + " 个方块，已移动 " + CompactNumbers.format(statistics.distanceMoved())
-                        + " 米，死亡 " + CompactNumbers.format(statistics.deaths()) + " 次"
+                        + " 米，击杀 " + CompactNumbers.format(statistics.kills())
+                        + " 次，死亡 " + CompactNumbers.format(statistics.deaths()) + " 次"
         ));
     }
 
@@ -83,6 +84,7 @@ final class LeaderboardCommand implements CommandExecutor, TabCompleter {
         String header = switch (metric) {
             case BLOCKS_MINED -> "方块挖掘排行榜";
             case DISTANCE_MOVED -> "移动距离排行榜";
+            case KILLS -> "击杀排行榜";
             case DEATHS -> "死亡排行榜";
         };
         sender.sendMessage(Component.text(header, NamedTextColor.GOLD));
@@ -104,6 +106,7 @@ final class LeaderboardCommand implements CommandExecutor, TabCompleter {
         return switch (name.toLowerCase(Locale.ROOT)) {
             case "blocks", "block" -> LeaderboardMetric.BLOCKS_MINED;
             case "distance", "move" -> LeaderboardMetric.DISTANCE_MOVED;
+            case "kills", "kill" -> LeaderboardMetric.KILLS;
             case "deaths", "death" -> LeaderboardMetric.DEATHS;
             default -> null;
         };

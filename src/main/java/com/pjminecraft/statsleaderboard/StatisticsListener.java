@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -47,5 +48,14 @@ final class StatisticsListener implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         store.recordDeath(player.getUniqueId(), player.getName());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onKill(EntityDeathEvent event) {
+        Player killer = event.getEntity().getKiller();
+        if (killer == null || killer.getUniqueId().equals(event.getEntity().getUniqueId())) {
+            return;
+        }
+        store.recordKill(killer.getUniqueId(), killer.getName());
     }
 }

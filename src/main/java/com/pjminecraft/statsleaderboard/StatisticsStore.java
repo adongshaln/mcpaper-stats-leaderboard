@@ -44,7 +44,8 @@ final class StatisticsStore {
                         player.getString("name"),
                         player.getLong("blocks"),
                         player.getDouble("distance"),
-                        player.getLong("deaths")
+                        player.getLong("deaths"),
+                        player.getLong("kills")
                 ));
             } catch (IllegalArgumentException ignored) {
                 logger.warning("跳过无效的统计玩家：" + key);
@@ -86,6 +87,11 @@ final class StatisticsStore {
         dirty = true;
     }
 
+    void recordKill(UUID playerId, String playerName) {
+        getOrCreate(playerId, playerName).addKill();
+        dirty = true;
+    }
+
     void saveIfDirty() {
         if (dirty) {
             save();
@@ -100,6 +106,7 @@ final class StatisticsStore {
             yaml.set(path + ".blocks", statistics.blocksMined());
             yaml.set(path + ".distance", statistics.distanceMoved());
             yaml.set(path + ".deaths", statistics.deaths());
+            yaml.set(path + ".kills", statistics.kills());
         }
         try {
             file.getParentFile().mkdirs();

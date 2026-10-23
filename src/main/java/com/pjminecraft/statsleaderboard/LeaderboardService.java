@@ -8,14 +8,16 @@ import java.util.List;
 enum LeaderboardMetric {
     BLOCKS_MINED,
     DISTANCE_MOVED,
+    KILLS,
     DEATHS
 }
 
-record LeaderboardEntry(int rank, String playerName, long blocksMined, double distanceMoved, long deaths) {
+record LeaderboardEntry(int rank, String playerName, long blocksMined, double distanceMoved, long kills, long deaths) {
     double value(LeaderboardMetric metric) {
         return switch (metric) {
             case BLOCKS_MINED -> blocksMined;
             case DISTANCE_MOVED -> distanceMoved;
+            case KILLS -> kills;
             case DEATHS -> deaths;
         };
     }
@@ -39,6 +41,7 @@ final class LeaderboardService {
                     statisticsEntry.playerName(),
                     statisticsEntry.blocksMined(),
                     statisticsEntry.distanceMoved(),
+                    statisticsEntry.kills(),
                     statisticsEntry.deaths()
             ));
         }
@@ -49,6 +52,7 @@ final class LeaderboardService {
         return switch (metric) {
             case BLOCKS_MINED -> Comparator.comparingLong(PlayerStatistics::blocksMined).reversed();
             case DISTANCE_MOVED -> Comparator.comparingDouble(PlayerStatistics::distanceMoved).reversed();
+            case KILLS -> Comparator.comparingLong(PlayerStatistics::kills).reversed();
             case DEATHS -> Comparator.comparingLong(PlayerStatistics::deaths).reversed();
         };
     }
