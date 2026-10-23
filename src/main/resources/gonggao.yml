@@ -1,0 +1,20 @@
+order: 30
+announcements:
+  - id: board
+    title: 排行榜
+    pages:
+      - |-
+        按住 Tab 时，
+        玩家列表上方会显示
+        挖掘、移动、击杀
+        和死亡的前三名。
+
+        松开 Tab 就收回，
+        平时不挡屏幕。
+      - |-
+        /slb 看自己的数字。
+        /slb top kills
+        看击杀榜。
+
+        击杀从插件更新之后
+        才开始计算。
